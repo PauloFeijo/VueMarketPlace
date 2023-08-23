@@ -24,8 +24,6 @@
         required: true
       }
     },
-    computed: {      
-    },
     methods: {
       Remove() {
         this.$emit("remove-product", this.product)
@@ -37,7 +35,7 @@
   };
 </script>
   
-  <style scoped>
+<style scoped>
   .card {
     display: flex;
     border: 1px solid #000;
@@ -60,9 +58,5 @@
     width: 150px;
     align-self: self-end;
   }
-  
-  div {
-    /*border: 1px solid #000;*/
-  }
-  </style>
+</style>
   

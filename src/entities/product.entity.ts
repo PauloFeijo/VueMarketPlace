@@ -6,6 +6,10 @@ export class Product {
     public price: number;
     public quantity: number;
 
+    get totalPrice(): number{
+        return this.price * this.quantity;
+    };
+
     constructor(product: any = {}) {
         this.id = product.id;
         this.title = product.title;
