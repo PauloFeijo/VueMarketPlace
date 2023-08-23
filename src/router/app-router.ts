@@ -27,7 +27,6 @@ const router = createRouter({
   
   router.beforeEach((to, from, next) => {
     const productAdded = productsData.filter(x => x.quantity > 0).length > 0;
-    console.log(productAdded);
     if (!productAdded && to.name == 'cart') {
       next({ name: 'products' });
     } else

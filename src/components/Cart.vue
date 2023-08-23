@@ -25,16 +25,19 @@
 </template>
 
 <script lang="ts">
+  import { Order } from "../entities/order.entity";
+  import { Product } from "../entities/product.entity";
   import { productsData } from "../infra/products-data";
+  import { mapStores } from 'pinia';
+  import  useOrderStore from "../store/order-store";
 
   export default {
-    methods: {
-      confirmOrder(){
-        if (this.name != ""){
-          // como criar um novo order e passar para a order.vue?  
-          this.$router.push({ name: 'order' });
-        }      
-      }
+    data() {
+      return {
+        isDelivery: "false",
+        name: "",
+        address: ""
+      };
     },
     computed: {
       products()
@@ -46,14 +49,38 @@
       },
       totalPrice() {
           return this.products.reduce((sum, product) => sum + (product.price * product.quantity), 0) + this.taxDelivery;
-      }
+      },
+      ...mapStores(useOrderStore),
     },
-    data: () => (
-      {
-        isDelivery: "false",
-        name: "",
-        address: ""
-      }),
+    methods: {
+      confirmOrder(){
+        if (this.name != ""){
+          const productList: Product[] = this.products.map((data: any) => {
+            return {
+              id: data.id,
+              title: data.title,
+              description: data.description,
+              imageSrc: data.imageSrc,
+              price: data.price,
+              quantity: data.quantity             
+            }
+          });
+
+          let order = new Order();
+          order.id = 1;
+          order.name = this.name;
+          order.isDelivery = this.isDelivery === "true";
+          order.address = this.address;
+          order.totalPrice = this.totalPrice;
+          order.products = productList;
+
+          console.log(this.userStore); // undefined
+          this.userStore.setOrder(order); // exception
+
+          this.$router.push({ name: 'order' });
+        }      
+      }
+    }
   };  
 </script>
 
